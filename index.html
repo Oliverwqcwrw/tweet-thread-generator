@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tweet Thread Generator — Free AI Tool</title>
+  <meta name="description" content="Free AI-powered tweet thread generator. Turn any topic, article, or idea into viral Twitter/X threads instantly. No signup required." />
+  <meta name="keywords" content="tweet thread generator, twitter thread, AI tweet, free tweet tool, twitter content" />
+  <link rel="canonical" href="https://oliverwqcwrw.github.io/tweet-thread-generator/" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Tweet Thread Generator",
+    "description": "Free AI-powered tool to turn any topic or article into viral Twitter/X threads instantly",
+    "url": "https://oliverwqcwrw.github.io/tweet-thread-generator/",
+    "applicationCategory": "ProductivityApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0d1117; color: #e6edf3; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+    header { background: #161b22; border-bottom: 1px solid #30363d; padding: 18px 24px; display: flex; align-items: center; gap: 12px; }
+    header .logo { font-size: 1.5rem; }
+    header h1 { font-size: 1.3rem; font-weight: 700; color: #58a6ff; }
+    header p { font-size: 0.85rem; color: #8b949e; margin-top: 2px; }
+    .container { max-width: 860px; margin: 32px auto; padding: 0 16px; }
+    .card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+    label { display: block; font-size: 0.85rem; color: #8b949e; margin-bottom: 6px; font-weight: 500; }
+    textarea, select, input[type=text], input[type=password], input[type=number] {
+      width: 100%; background: #0d1117; border: 1px solid #30363d; border-radius: 8px;
+      color: #e6edf3; font-size: 0.9rem; padding: 10px 12px; outline: none; transition: border-color 0.2s;
+      font-family: inherit;
+    }
+    textarea:focus, select:focus, input:focus { border-color: #58a6ff; }
+    textarea { resize: vertical; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    @media (max-width: 600px) { .row, .row3 { grid-template-columns: 1fr; } }
+    .btn { display: inline-flex; align-items: center; gap: 8px; background: #238636; border: none; color: #fff; font-size: 0.95rem; font-weight: 600; padding: 11px 24px; border-radius: 8px; cursor: pointer; transition: background 0.2s; }
+    .btn:hover { background: #2ea043; }
+    .btn:disabled { background: #21262d; color: #484f58; cursor: not-allowed; }
+    .btn-secondary { background: #21262d; border: 1px solid #30363d; }
+    .btn-secondary:hover { background: #30363d; }
+    .section-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; color: #f0f6fc; }
+    .thread-output { display: flex; flex-direction: column; gap: 12px; }
+    .tweet-card { background: #0d1117; border: 1px solid #30363d; border-radius: 10px; padding: 14px 16px; position: relative; }
+    .tweet-num { font-size: 0.75rem; color: #58a6ff; font-weight: 700; margin-bottom: 6px; }
+    .tweet-text { font-size: 0.95rem; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
+    .tweet-count { font-size: 0.75rem; color: #8b949e; margin-top: 8px; text-align: right; }
+    .tweet-count.over { color: #f85149; }
+    .copy-btn { position: absolute; top: 10px; right: 10px; background: #21262d; border: 1px solid #30363d; color: #8b949e; border-radius: 6px; padding: 4px 10px; font-size: 0.75rem; cursor: pointer; }
+    .copy-btn:hover { color: #e6edf3; }
+    .copy-all-btn { background: #1f6feb; border: 1px solid #388bfd; color: #fff; border-radius: 8px; padding: 9px 18px; font-size: 0.88rem; cursor: pointer; margin-top: 4px; }
+    .copy-all-btn:hover { background: #388bfd; }
+    .status { padding: 10px 14px; border-radius: 8px; font-size: 0.88rem; margin-top: 12px; display: none; }
+    .status.info { background: #1f3a5f; border: 1px solid #388bfd; color: #79c0ff; display: block; }
+    .status.error { background: #3d1c1c; border: 1px solid #f85149; color: #ff7b72; display: block; }
+    .status.success { background: #1a3a27; border: 1px solid #3fb950; color: #56d364; display: block; }
+    .tag { display: inline-block; background: #21262d; border: 1px solid #30363d; border-radius: 20px; padding: 3px 10px; font-size: 0.78rem; color: #8b949e; margin: 3px; cursor: pointer; }
+    .tag:hover { border-color: #58a6ff; color: #58a6ff; }
+    /* Donation */
+    .donation { text-align: center; padding: 32px 24px; }
+    .donation h3 { font-size: 1.2rem; margin-bottom: 6px; }
+    .donation p { color: #8b949e; font-size: 0.88rem; margin-bottom: 24px; }
+    .qr-grid { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+    .qr-item { text-align: center; }
+    .qr-item img { border: 2px solid #30363d; border-radius: 8px; display: block; margin: 0 auto 8px; }
+    .qr-item .addr { font-size: 0.7rem; color: #8b949e; word-break: break-all; max-width: 140px; }
+    .qr-item .chain { font-size: 0.82rem; font-weight: 700; color: #f0f6fc; margin-bottom: 6px; }
+    .spinner { width: 18px; height: 18px; border: 2px solid #484f58; border-top-color: #58a6ff; border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; vertical-align: middle; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .provider-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    @media (max-width: 600px) { .provider-grid { grid-template-columns: 1fr; } }
+    .provider-option { background: #0d1117; border: 2px solid #30363d; border-radius: 8px; padding: 12px; cursor: pointer; }
+    .provider-option.active { border-color: #58a6ff; }
+    .provider-option .pname { font-weight: 700; font-size: 0.88rem; }
+    .provider-option .pmodel { font-size: 0.75rem; color: #8b949e; }
+    .provider-option .pfree { font-size: 0.72rem; color: #3fb950; font-weight: 600; }
+  </style>
+</head>
+<body>
+<header>
+  <span class="logo">🧵</span>
+  <div>
+    <h1>Tweet Thread Generator</h1>
+    <p>Turn any topic or idea into viral Twitter/X threads with AI</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- AI Provider Settings -->
+  <div class="card">
+    <div class="section-title">⚙️ AI Provider</div>
+    <div class="provider-grid" id="providerGrid">
+      <div class="provider-option active" data-provider="groq">
+        <div class="pname">🟢 Groq</div>
+        <div class="pmodel">llama-3.3-70b-versatile</div>
+        <div class="pfree">Free tier available</div>
+      </div>
+      <div class="provider-option" data-provider="openrouter">
+        <div class="pname">🔵 OpenRouter</div>
+        <div class="pmodel">llama-3.3-70b:free</div>
+        <div class="pfree">Free tier available</div>
+      </div>
+      <div class="provider-option" data-provider="deepseek">
+        <div class="pname">🟣 DeepSeek</div>
+        <div class="pmodel">deepseek-chat</div>
+        <div class="pfree">Low cost</div>
+      </div>
+      <div class="provider-option" data-provider="openai">
+        <div class="pname">🟡 OpenAI</div>
+        <div class="pmodel">gpt-4o-mini</div>
+        <div class="pfree">Paid</div>
+      </div>
+    </div>
+    <div style="margin-top:14px;">
+      <label id="apiKeyLabel">Groq API Key</label>
+      <input type="password" id="apiKey" placeholder="Enter your API key (saved locally)" />
+    </div>
+    <div style="margin-top:10px; font-size:0.78rem; color:#8b949e;">
+      🔒 API keys are stored in your browser only, never sent to our servers.
+      Get free keys: <a href="https://console.groq.com" target="_blank" style="color:#58a6ff;">Groq</a> ·
+      <a href="https://openrouter.ai" target="_blank" style="color:#58a6ff;">OpenRouter</a> ·
+      <a href="https://platform.deepseek.com" target="_blank" style="color:#58a6ff;">DeepSeek</a> ·
+      <a href="https://platform.openai.com" target="_blank" style="color:#58a6ff;">OpenAI</a>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="card">
+    <div class="section-title">✍️ Thread Content</div>
+    <div style="margin-bottom:14px;">
+      <label>Topic / Idea / Paste Article</label>
+      <textarea id="topicInput" rows="5" placeholder="Enter your topic, a URL to summarize, an article, or just a quick idea...
+E.g. 'Why morning routines are overrated', 'The history of Bitcoin', 'How to learn any skill faster'"></textarea>
+    </div>
+    <div class="row" style="margin-bottom:14px;">
+      <div>
+        <label>Thread Length</label>
+        <select id="threadLength">
+          <option value="5">5 tweets (quick)</option>
+          <option value="8" selected>8 tweets (standard)</option>
+          <option value="12">12 tweets (detailed)</option>
+          <option value="15">15 tweets (deep dive)</option>
+        </select>
+      </div>
+      <div>
+        <label>Tone / Style</label>
+        <select id="toneSelect">
+          <option value="engaging">Engaging & Conversational</option>
+          <option value="educational">Educational</option>
+          <option value="storytelling">Storytelling</option>
+          <option value="controversial">Provocative / Contrarian</option>
+          <option value="inspirational">Inspirational</option>
+          <option value="humorous">Humorous</option>
+          <option value="professional">Professional</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-bottom:14px;">
+      <label>Quick Prompts (click to fill)</label>
+      <div>
+        <span class="tag" onclick="setTopic('10 lessons I learned after 5 years of building side projects')">10 lessons from side projects</span>
+        <span class="tag" onclick="setTopic('Why most people fail at learning new skills and what actually works')">Learning skills effectively</span>
+        <span class="tag" onclick="setTopic('The productivity system that actually works for busy people')">Productivity systems</span>
+        <span class="tag" onclick="setTopic('How AI is changing software development in 2025')">AI & dev in 2025</span>
+        <span class="tag" onclick="setTopic('Why sleeping 8 hours is the best productivity hack')">Sleep & productivity</span>
+        <span class="tag" onclick="setTopic('How to build an audience from zero on Twitter/X')">Build Twitter audience</span>
+      </div>
+    </div>
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <button class="btn" id="generateBtn" onclick="generate()">
+        <span>🧵 Generate Thread</span>
+      </button>
+      <button class="btn btn-secondary" onclick="clearAll()">Clear</button>
+    </div>
+    <div id="status" class="status"></div>
+  </div>
+
+  <!-- Output -->
+  <div class="card" id="outputCard" style="display:none;">
+    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:16px;">
+      <div class="section-title" style="margin:0;">🧵 Your Thread</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button class="copy-all-btn" onclick="copyAll()">📋 Copy All</button>
+        <button class="copy-all-btn" style="background:#21262d; border-color:#30363d;" onclick="regenerate()">🔄 Regenerate</button>
+      </div>
+    </div>
+    <div class="thread-output" id="threadOutput"></div>
+  </div>
+
+  <!-- Donation -->
+  <div class="card donation">
+    <h3>☕ Support This Free Tool</h3>
+    <p>If this tool saved you time, consider a small donation. Every contribution helps keep it free and ad-free!</p>
+    <div class="qr-grid">
+      <div class="qr-item">
+        <div class="chain">USDT (TRC-20)</div>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=TSvC67jexputnNHayVR8fpScwFmwvZV8jp" alt="USDT TRC-20 QR" width="110" height="110" />
+        <div class="addr">TSvC67jexputnNHayVR8fpScwFmwvZV8jp</div>
+      </div>
+      <div class="qr-item">
+        <div class="chain">ETH (ERC-20)</div>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=0x11e764fac3fcd4be16da43a252a62b156e06a632" alt="ETH ERC-20 QR" width="110" height="110" />
+        <div class="addr">0x11e764fac3fcd4be16da43a252a62b156e06a632</div>
+      </div>
+    </div>
+  </div>
+
+  <footer style="text-align:center; padding:24px; color:#484f58; font-size:0.8rem;">
+    <p>Free AI Tweet Thread Generator · No signup · Works with your own API key</p>
+    <p style="margin-top:6px;"><a href="https://oliverwqcwrw.github.io/" style="color:#58a6ff;">← More Free AI Tools</a></p>
+  </footer>
+</div>
+
+<script>
+const PROVIDERS = {
+  groq: {
+    label: 'Groq API Key',
+    placeholder: 'gsk_...',
+    url: 'https://api.groq.com/openai/v1/chat/completions',
+    model: 'llama-3.3-70b-versatile',
+    headers: (key) => ({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` })
+  },
+  openrouter: {
+    label: 'OpenRouter API Key',
+    placeholder: 'sk-or-...',
+    url: 'https://openrouter.ai/api/v1/chat/completions',
+    model: 'meta-llama/llama-3.3-70b-instruct:free',
+    headers: (key) => ({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` })
+  },
+  deepseek: {
+    label: 'DeepSeek API Key',
+    placeholder: 'sk-...',
+    url: 'https://api.deepseek.com/v1/chat/completions',
+    model: 'deepseek-chat',
+    headers: (key) => ({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` })
+  },
+  openai: {
+    label: 'OpenAI API Key',
+    placeholder: 'sk-...',
+    url: 'https://api.openai.com/v1/chat/completions',
+    model: 'gpt-4o-mini',
+    headers: (key) => ({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` })
+  }
+};
+
+let currentProvider = 'groq';
+
+// Load saved API keys
+document.querySelectorAll('.provider-option').forEach(el => {
+  el.addEventListener('click', () => {
+    document.querySelectorAll('.provider-option').forEach(e => e.classList.remove('active'));
+    el.classList.add('active');
+    currentProvider = el.dataset.provider;
+    const p = PROVIDERS[currentProvider];
+    document.getElementById('apiKeyLabel').textContent = p.label;
+    document.getElementById('apiKey').placeholder = p.placeholder;
+    document.getElementById('apiKey').value = localStorage.getItem(`apikey_${currentProvider}`) || '';
+  });
+});
+
+document.getElementById('apiKey').addEventListener('change', e => {
+  localStorage.setItem(`apikey_${currentProvider}`, e.target.value);
+});
+
+// Load on init
+document.getElementById('apiKey').value = localStorage.getItem('apikey_groq') || '';
+
+function setTopic(text) {
+  document.getElementById('topicInput').value = text;
+}
+
+function clearAll() {
+  document.getElementById('topicInput').value = '';
+  document.getElementById('outputCard').style.display = 'none';
+  setStatus('', '');
+}
+
+function setStatus(msg, type) {
+  const el = document.getElementById('status');
+  el.textContent = msg;
+  el.className = 'status ' + (type || '');
+  if (!type) el.style.display = 'none';
+}
+
+async function generate() {
+  const topic = document.getElementById('topicInput').value.trim();
+  if (!topic) { setStatus('Please enter a topic or idea.', 'error'); return; }
+  
+  const apiKey = document.getElementById('apiKey').value.trim();
+  if (!apiKey) { setStatus('Please enter your API key above.', 'error'); return; }
+  
+  localStorage.setItem(`apikey_${currentProvider}`, apiKey);
+  
+  const length = document.getElementById('threadLength').value;
+  const tone = document.getElementById('toneSelect').value;
+  
+  const btn = document.getElementById('generateBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Generating...';
+  setStatus('🧠 AI is crafting your thread...', 'info');
+  
+  const prompt = `You are a viral Twitter/X content creator. Generate a compelling tweet thread about the following topic.
+
+Topic: ${topic}
+Number of tweets: ${length}
+Tone/Style: ${tone}
+
+Rules:
+- Each tweet must be under 280 characters (including the (1/${length}) numbering)
+- Start with a HOOK tweet that grabs attention
+- Each tweet should flow naturally to the next
+- Use line breaks within tweets for readability
+- Include emojis where appropriate for engagement
+- End with a strong CTA (Call to Action) tweet
+- Make it shareable and valuable
+
+Return ONLY the tweets, one per line, numbered like:
+Tweet 1: [content]
+Tweet 2: [content]
+...and so on.
+
+Do NOT include any other text, explanation, or formatting besides the numbered tweets.`;
+
+  const p = PROVIDERS[currentProvider];
+  
+  try {
+    const res = await fetch(p.url, {
+      method: 'POST',
+      headers: p.headers(apiKey),
+      body: JSON.stringify({
+        model: p.model,
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 2000,
+        temperature: 0.8
+      })
+    });
+    
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`API error ${res.status}: ${errText.slice(0, 200)}`);
+    }
+    
+    const data = await res.json();
+    const content = data.choices?.[0]?.message?.content || '';
+    
+    if (!content) throw new Error('No content returned from AI.');
+    
+    renderThread(content, parseInt(length));
+    setStatus('✅ Thread generated! Copy and post to Twitter/X.', 'success');
+  } catch (err) {
+    setStatus(`❌ Error: ${err.message}`, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span>🧵 Generate Thread</span>';
+  }
+}
+
+function renderThread(text, expectedCount) {
+  // Parse tweets
+  const lines = text.split('\n').filter(l => l.trim());
+  const tweets = [];
+  
+  lines.forEach(line => {
+    const match = line.match(/^(?:Tweet\s*\d+[:.]?\s*)(.*)/i);
+    if (match) {
+      tweets.push(match[1].trim());
+    } else if (line.match(/^\d+[.:]\s+/)) {
+      tweets.push(line.replace(/^\d+[.:]\s+/, '').trim());
+    }
+  });
+  
+  // Fallback: split on numbered lines
+  if (tweets.length === 0) {
+    const chunks = text.split(/\n\s*\n/).filter(t => t.trim());
+    chunks.forEach(c => tweets.push(c.trim()));
+  }
+  
+  const container = document.getElementById('threadOutput');
+  container.innerHTML = '';
+  
+  tweets.forEach((tweet, i) => {
+    const charCount = tweet.length;
+    const isOver = charCount > 280;
+    container.innerHTML += `
+      <div class="tweet-card">
+        <div class="tweet-num">Tweet ${i + 1} of ${tweets.length}</div>
+        <div class="tweet-text" id="tweet-${i}">${escapeHtml(tweet)}</div>
+        <div class="tweet-count ${isOver ? 'over' : ''}">${charCount}/280 chars</div>
+        <button class="copy-btn" onclick="copyTweet(${i})">Copy</button>
+      </div>`;
+  });
+  
+  document.getElementById('outputCard').style.display = 'block';
+  document.getElementById('outputCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function escapeHtml(text) {
+  return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function copyTweet(i) {
+  const el = document.getElementById(`tweet-${i}`);
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    const btn = el.parentElement.querySelector('.copy-btn');
+    btn.textContent = '✓ Copied';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+}
+
+function copyAll() {
+  const tweets = document.querySelectorAll('.tweet-text');
+  const all = Array.from(tweets).map((el, i) => `${i + 1}/${tweets.length} ${el.textContent}`).join('\n\n');
+  navigator.clipboard.writeText(all).then(() => {
+    const btn = document.querySelector('.copy-all-btn');
+    btn.textContent = '✓ All Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy All', 1500);
+  });
+}
+
+function regenerate() {
+  generate();
+}
+</script>
+</body>
+</html>
